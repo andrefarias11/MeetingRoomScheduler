@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: MeetingRoomScheduler.API/Dockerfile
+    container_name: meetingroom_api
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=MeetingRoomDB;Username=postgres;Password=postgres
+    ports:
+      - "5000:8080"
+      - "5001:8081"
+
+  db:
+    image: postgres:15
+    container_name: meetingroom_db
+    restart: always
+    environment:
+      POSTGRES_DB: MeetingRoomDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
