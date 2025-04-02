@@ -1,10 +1,11 @@
-version: '3.8'
+version: '3.9'
 
 services:
   api:
     build:
       context: .
       dockerfile: MeetingRoomScheduler.API/Dockerfile
+    command: dotnet watch --project MeetingRoomScheduler.API run --no-launch-profile
     container_name: meetingroom_api
     depends_on:
       - db
