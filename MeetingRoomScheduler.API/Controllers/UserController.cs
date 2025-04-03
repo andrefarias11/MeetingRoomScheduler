@@ -1,11 +1,13 @@
 ﻿using MeetingRoomScheduler.Application.Services;
 using MeetingRoomScheduler.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeetingRoomScheduler.API.Controllers;
 
 [Route("api/users")]
 [ApiController]
+[Authorize]
 public class UserController : ControllerBase
 {
     private readonly UserService _userService;
@@ -30,6 +32,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> RegisterUser([FromBody] User user)
     {
         var result = await _userService.RegisterUser(user.Name, user.Email, user.PasswordHash);

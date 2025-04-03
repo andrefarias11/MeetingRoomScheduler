@@ -4,6 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
+namespace MeetingRoomScheduler.Application.Services;
+
 public class AuthService
 {
     private readonly IConfiguration _configuration;

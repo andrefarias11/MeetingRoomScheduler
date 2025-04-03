@@ -2,6 +2,7 @@
 using MeetingRoomScheduler.Domain.Interfaces;
 
 namespace MeetingRoomScheduler.Application.Services;
+
 public class UserService
 {
     private readonly IUserRepository _userRepository;

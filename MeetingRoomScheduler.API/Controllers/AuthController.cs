@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using MeetingRoomScheduler.Application.Services;
 using MeetingRoomScheduler.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -23,9 +24,6 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginRequest request)
     {
-        if (request.Email != "admin" || request.Password != "1234")
-            return Unauthorized(new { message = "Credenciais inválidas!" });
-
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"]);
         var tokenDescriptor = new SecurityTokenDescriptor
