@@ -1,4 +1,5 @@
 using System.Text;
+using MeetingRoomScheduler.API.Middlewares;
 using MeetingRoomScheduler.Application.Services;
 using MeetingRoomScheduler.Domain.Interfaces;
 using MeetingRoomScheduler.Infrastructure.Data;
@@ -87,6 +88,8 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 var app = builder.Build();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseCors("AllowAll");
 app.UseAuthentication();

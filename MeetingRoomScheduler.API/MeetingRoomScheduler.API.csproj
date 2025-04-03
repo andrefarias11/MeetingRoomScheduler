@@ -23,6 +23,7 @@
     <ProjectReference Include="..\MeetingRoomScheduler.Application\MeetingRoomScheduler.Application.csproj" />
     <ProjectReference Include="..\MeetingRoomScheduler.Domain\MeetingRoomScheduler.Domain.csproj" />
     <ProjectReference Include="..\MeetingRoomScheduler.Infrastructure\MeetingRoomScheduler.Infrastructure.csproj" />
+    <ProjectReference Include="..\MeetingRoomScheduler.Middlewares\MeetingRoomScheduler.Middlewares.csproj" />
     <ProjectReference Include="..\MeetingRoomScheduler.Util\MeetingRoomScheduler.Util.csproj" />
   </ItemGroup>
 
