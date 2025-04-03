@@ -5,8 +5,8 @@ namespace MeetingRoomScheduler.Domain.Entities;
 
 public class Reservation : BaseEntity
 {
-    public User? User { get; set; }
-    public Room? Room { get; set; }
+    public Guid UserId { get; set; }
+    public Guid RoomId { get; set; }
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
     public ReservationStatus Status { get; set; } = ReservationStatus.Active;
