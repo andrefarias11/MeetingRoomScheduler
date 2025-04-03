@@ -1,5 +1,7 @@
 ﻿using MeetingRoomScheduler.Application.Services;
 using MeetingRoomScheduler.Domain.Entities;
+using MeetingRoomScheduler.Domain.Entities.Enums;
+using MeetingRoomScheduler.Util.Language;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,17 +33,24 @@ public class ReservationController : ControllerBase
         return Ok(reservations);
     }
 
+    [HttpGet("filter")]
+    public async Task<IActionResult> GetReservationsByFilters([FromQuery] DateTime? date, [FromQuery] ReservationStatus? status)
+    {
+        var reservations = await _reservationService.GetReservationsByFilters(date, status);
+        return Ok(reservations);
+    }
+
     [HttpPost]
     public async Task<IActionResult> AddReservation([FromBody] Reservation reservation)
     {
         var success = await _reservationService.AddReservation(reservation.RoomId, reservation.UserId, reservation.StartTime, reservation.EndTime);
-        return success ? Ok(new { message = "Reserva criada com sucesso!" }) : BadRequest(new { message = "Conflito de horário ou dados inválidos." });
+        return success ? Ok(new { message = ReservationMsg.Reservation_Success }) : BadRequest(new { message = ReservationMsg.Reservation_Conflict });
     }
 
     [HttpPut("{id}/cancel")]
     public async Task<IActionResult> CancelReservation(Guid id)
     {
         var success = await _reservationService.CancelReservation(id);
-        return success ? Ok(new { message = "Reserva cancelada com sucesso!" }) : NotFound();
+        return success ? Ok(new { message = ReservationMsg.Reservation_Cancelled }) : NotFound();
     }
 }

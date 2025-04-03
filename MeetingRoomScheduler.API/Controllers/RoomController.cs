@@ -2,6 +2,7 @@
 using MeetingRoomScheduler.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MeetingRoomScheduler.Util.Language;
 
 namespace MeetingRoomScheduler.API.Controllers;
 
@@ -35,20 +36,20 @@ public class RoomController : ControllerBase
     public async Task<IActionResult> AddRoom([FromBody] Room room)
     {
         var success = await _roomService.AddRoom(room.Name, room.Capacity);
-        return success ? Ok(new { message = "Sala criada com sucesso!" }) : BadRequest(new { message = "Erro ao criar sala." });
+        return success ? Ok(new { message = RoomMsg.Room_Creation_Success }) : BadRequest(new { message = RoomMsg.Room_Error});
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateRoom(Guid id, [FromBody] Room room)
     {
         var success = await _roomService.UpdateRoom(id, room.Name, room.Capacity);
-        return success ? Ok(new { message = "Sala atualizada com sucesso!" }) : NotFound();
+        return success ? Ok(new { message = RoomMsg.Room_Update_Success }) : NotFound();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteRoom(Guid id)
     {
         var success = await _roomService.DeleteRoom(id);
-        return success ? Ok(new { message = "Sala removida com sucesso!" }) : NotFound();
+        return success ? Ok(new { message = RoomMsg.Room_Remove_Success }) : NotFound();
     }
 }

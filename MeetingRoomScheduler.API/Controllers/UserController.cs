@@ -1,5 +1,6 @@
 ﻿using MeetingRoomScheduler.Application.Services;
 using MeetingRoomScheduler.Domain.Entities;
+using MeetingRoomScheduler.Util.Language;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,20 +37,20 @@ public class UserController : ControllerBase
     public async Task<IActionResult> RegisterUser([FromBody] User user)
     {
         var result = await _userService.RegisterUser(user.Name, user.Email, user.PasswordHash);
-        return result ? Ok(new { message = "Usuário cadastrado com sucesso!" }) : BadRequest(new { message = "Email já cadastrado." });
+        return result ? Ok(new { message = UserMsg.User_Creation_Success }) : BadRequest(new { message = UserMsg.Email_AlreadyExists });
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateUser(Guid id, [FromBody] User user)
     {
         var result = await _userService.UpdateUser(id, user.Name, user.Email);
-        return result ? Ok(new { message = "Usuário atualizado com sucesso!" }) : NotFound();
+        return result ? Ok(new { message = UserMsg.User_Update_Success }) : NotFound();
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(Guid id)
     {
         var result = await _userService.DeleteUser(id);
-        return result ? Ok(new { message = "Usuário removido com sucesso!" }) : NotFound();
+        return result ? Ok(new { message = UserMsg.User_Remove_Success }) : NotFound();
     }
 }

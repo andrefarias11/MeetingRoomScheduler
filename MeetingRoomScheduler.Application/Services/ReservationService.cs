@@ -29,6 +29,11 @@ public class ReservationService
     public async Task<Reservation?> GetReservationById(Guid id) =>
         await _reservationRepository.GetReservationById(id);
 
+    public async Task<IEnumerable<Reservation>> GetReservationsByFilters(DateTime? date, ReservationStatus? status)
+    {
+        return await _reservationRepository.GetReservationsByFilters(date, status);
+    }
+
     public async Task<bool> AddReservation(Guid roomId, Guid userId, DateTime startTime, DateTime endTime)
     {
         if (startTime >= endTime)

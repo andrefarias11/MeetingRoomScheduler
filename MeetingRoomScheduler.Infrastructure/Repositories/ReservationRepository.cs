@@ -1,4 +1,5 @@
 ﻿using MeetingRoomScheduler.Domain.Entities;
+using MeetingRoomScheduler.Domain.Entities.Enums;
 using MeetingRoomScheduler.Domain.Interfaces;
 using MeetingRoomScheduler.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,23 @@ public class ReservationRepository : IReservationRepository
             .Include(r => r.UserId)
             .Include(r => r.RoomId)
             .ToListAsync();
+
+    public async Task<IEnumerable<Reservation>> GetReservationsByFilters(DateTime? date, ReservationStatus? status)
+    {
+        var query = _context.Reservation.AsQueryable();
+
+        if (date.HasValue)
+        {
+            query = query.Where(r => r.StartTime.Date == date.Value.Date);
+        }
+
+        if (status.HasValue)
+        {
+            query = query.Where(r => r.Status == status.Value);
+        }
+
+        return await query.ToListAsync();
+    }
 
     public async Task AddReservation(Reservation reservation)
     {
