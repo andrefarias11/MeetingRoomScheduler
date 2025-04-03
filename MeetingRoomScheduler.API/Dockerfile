@@ -1,28 +1,24 @@
-# Usar a imagem oficial do .NET 8/9 SDK para build
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Copiar arquivos do projeto e restaurar dependências
-COPY MeetingRoomScheduler.sln ./
-COPY MeetingRoomScheduler.API/MeetingRoomScheduler.API.csproj MeetingRoomScheduler.API/
-COPY MeetingRoomScheduler.Application/MeetingRoomScheduler.Application.csproj MeetingRoomScheduler.Application/ 
-COPY MeetingRoomScheduler.Infrastructure/MeetingRoomScheduler.Infrastructure.csproj MeetingRoomScheduler.Infrastructure/
-COPY MeetingRoomScheduler.Domain/MeetingRoomScheduler.Domain.csproj MeetingRoomScheduler.Domain/
-RUN dotnet restore
 
-# Copiar o código restante e fazer o build
+COPY MeetingRoomScheduler.API/*.csproj ./MeetingRoomScheduler.API/
+COPY MeetingRoomScheduler.Application/*.csproj ./MeetingRoomScheduler.Application/
+COPY MeetingRoomScheduler.Domain/*.csproj ./MeetingRoomScheduler.Domain/
+COPY MeetingRoomScheduler.Infrastructure/*.csproj ./MeetingRoomScheduler.Infrastructure/
+
+RUN dotnet restore MeetingRoomScheduler.API/MeetingRoomScheduler.API.csproj
+
 COPY . .
-WORKDIR /app/MeetingRoomScheduler.API
-RUN dotnet publish -c Release -o /out
 
-# Criar a imagem final baseada no ASP.NET Core Runtime
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+RUN dotnet publish MeetingRoomScheduler.API/MeetingRoomScheduler.API.csproj -c Release -o /publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=build /out .
 
-# Expor a porta da API
-EXPOSE 5000
-EXPOSE 5001
+COPY --from=build /publish .
 
-# Comando de inicialização da API
-ENTRYPOINT ["dotnet", "MeetingRoomScheduler.API.dll"]
+EXPOSE 80
+EXPOSE 443
+
+CMD ["dotnet", "MeetingRoomScheduler.API.dll"]
