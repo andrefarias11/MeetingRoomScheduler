@@ -14,21 +14,16 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<User>> GetAllUsers()
-    {
-        return await _context.Users.ToListAsync();
-    }
+    public async Task<IEnumerable<User>> GetAllUsers() =>
+        await _context.Users.ToListAsync();
+    
 
-    public async Task<User?> GetUserByEmail(string email)
-    {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
-    }
-
-    public async Task<User?> GetUserById(Guid id)
-    {
-        return await _context.Users.FindAsync(id);
-    }
-
+    public async Task<User?> GetUserByEmail(string email) => 
+        await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+    
+    public async Task<User?> GetUserById(Guid id) => 
+        await _context.Users.FindAsync(id);
+    
     public async Task UpdateUser(User user)
     {
         _context.Users.Update(user);

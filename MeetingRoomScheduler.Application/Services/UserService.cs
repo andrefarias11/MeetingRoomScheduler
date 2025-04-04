@@ -12,15 +12,12 @@ public class UserService
         _userRepository = userRepository;
     }
 
-    public async Task<User?> GetUserById(Guid id)
-    {
-        return await _userRepository.GetUserById(id);
-    }
+    public async Task<User?> GetUserById(Guid id) => 
+        await _userRepository.GetUserById(id);
+    
 
-    public async Task<List<User>> GetAllUsers()
-    {
-        return (List<User>)await _userRepository.GetAllUsers();
-    }
+    public async Task<List<User>> GetAllUsers() =>  
+        (List<User>)await _userRepository.GetAllUsers();
 
     public async Task<bool> RegisterUser(string name, string email, string password)
     {
@@ -37,7 +34,8 @@ public class UserService
     public async Task<bool> UpdateUser(Guid id, string name, string email)
     {
         var user = await _userRepository.GetUserById(id);
-        if (user == null) return false;
+        if (user == null) 
+            return false;
 
         user.Name = name;
         user.Email = email;
@@ -49,7 +47,8 @@ public class UserService
     public async Task<bool> DeleteUser(Guid id)
     {
         var user = await _userRepository.GetUserById(id);
-        if (user == null) return false;
+        if (user == null) 
+            return false;
 
         await _userRepository.DeleteUserById(id);
         return true;

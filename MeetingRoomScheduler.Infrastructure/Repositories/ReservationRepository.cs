@@ -39,16 +39,13 @@ public class ReservationRepository : IReservationRepository
     {
         var query = _context.Reservation.AsQueryable();
 
-        if (date.HasValue)
-        {
+        if (date.HasValue)       
             query = query.Where(r => r.StartTime.Date == date.Value.Date);
-        }
+        
 
-        if (status.HasValue)
-        {
+        if (status.HasValue)       
             query = query.Where(r => r.Status == status.Value);
-        }
-
+        
         return await query.ToListAsync();
     }
 
